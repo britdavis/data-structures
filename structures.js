@@ -129,38 +129,53 @@ assert(que.isEmpty(), true, "Queue is empty after popping first item");
 // BCD Basic wrapper for an object
 // Basic wrapper for a primitive
 var objectItem = (function () {
-    function objectItem(key1, key2, key3, key4) {
-        if (key4 === void 0) { key4 = true; }
-        this.key1 = key1;
-        this.key2 = key2;
-        this.key3 = key3;
-        this.key4 = key4;
+    function objectItem() {
     }
     return objectItem;
 }());
 var assocArray = (function () {
     function assocArray() {
-        // initialize our storage so that it actually is an array.
-        this.storage = [];
+        // initialize our storage so that it actually is an object.
+        this.storage = {};
     }
-    assocArray.prototype.addObjectItem = function (i) {
+    assocArray.prototype.addObjectItem = function (key, value) {
         // void means that this function doesn't return anything.
         // to add an item, push that item onto the end of the array.
-        this.storage.push(i);
+        this.storage[key] = value;
     };
     ;
-    assocArray.prototype.getFirstObjectItem = function () {
+    assocArray.prototype.getFirstObjectItem = function (key) {
         // todo: remove and return the last item on the storage
-        return this.storage.shift();
+        delete this.storage[key];
+        return this.storage[key];
     };
-    assocArray.prototype.peekFirstObjectItem = function () {
+    assocArray.prototype.reassignObjectItem = function (key, value) {
+        for (var i = 0; i < this.storage; i++) {
+            if (this.storage[i][key]) {
+                this.storage[i][key] = value;
+                return;
+            }
+        }
+    };
+    /*
+   reassign(key: string, value: any): void {
+        for (let i:number = 0; i < this.storage.length; i++) {
+            if (this.storage[i][key]) {
+                this.storage[i][key] = value;
+                return;
+            }
+        }
+    }
+
+    */
+    assocArray.prototype.peekFirstObjectItem = function (key) {
         // todo: return a reference to the last item in storage without removing
         // this.storage[-1];
-        return this.storage[0];
+        return this.storage[key];
     };
     assocArray.prototype.isEmpty = function () {
-        // todo: return true if storage is empty, false otherwise
-        if (this.storage[0] === undefined) {
+        // 		// todo: return true if storage is empty, false otherwise
+        if (this.storage === {}) {
             return true;
         }
         return false;
@@ -170,11 +185,11 @@ var assocArray = (function () {
 }());
 var aa = new assocArray();
 assert(aa.isEmpty(), true, "Associative arrary is empty on creation");
-aa.addObjectItem(new objectItem("kitten", "sss", 5, true));
+aa.addObjectItem("key1", "myvalue1");
 assert(aa.isEmpty(), false, "Associative Array is not empty after one ObjectItem added");
-var i5 = aa.peekFirstObjectItem();
-assert(i5.key3, 5, "Peeking first Associative Array item gets us the first ObjectItem");
+var i5 = aa.peekFirstObjectItem("key1");
+assert(i5, "myvalue1", "Peeking first Associative Array item gets us the first ObjectItem");
 assert(aa.isEmpty(), false, "Associative Array  is not emptied by peeking");
-var i6 = aa.getFirstObjectItem();
-assert(i6.key3, 5, "Associative Array returns last item on getLastObjectItem");
+var i6 = aa.getFirstObjectItem("key1");
+assert(i6, undefined, "Associative Array returns last item on getLastObjectItem");
 assert(aa.isEmpty(), true, "Associative Array is empty after popping first item");

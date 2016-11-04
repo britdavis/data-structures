@@ -161,42 +161,59 @@ assert(que.isEmpty(), true, "Queue is empty after popping first item");
 // BCD Basic wrapper for an object
 // Basic wrapper for a primitive
 class objectItem {
-	constructor(
-		public key1: string,
-		public key2: string,
-		public key3: number,
-		public key4: boolean = true
-	) {}
+	constructor() {}
 }
-
 
 class assocArray {
 	 // BCD set up our associative array, and keep it from prying eyes
-	private storage: objectItem[];
+	private storage: objectItem;
 
 	constructor() {
- 		// initialize our storage so that it actually is an array.
-		this.storage = [];
-}
-	addObjectItem(i: objectItem): void {
+ 		// initialize our storage so that it actually is an object.
+		this.storage = {};
+	}
+	addObjectItem(key: any, value: any): void {
  		// void means that this function doesn't return anything.
  		// to add an item, push that item onto the end of the array.
-		this.storage.push(i);
+		this.storage[key] = value;
 	};
-	getFirstObjectItem(): objectItem {
+	getFirstObjectItem(key: any): objectItem {
  		// todo: remove and return the last item on the storage
-		return this.storage.shift();
+		delete this.storage[key];
+		return this.storage[key];
 	}
 
-	peekFirstObjectItem(): objectItem {
+	reassignObjectItem(key: any, value: any): void {
+		for (var i: number = 0; i < this.storage; i++) {
+			if (this.storage[i][key]) {
+				this.storage[i][key] = value;
+				return;
+			}
+		}
+	}
+
+	/*
+   reassign(key: string, value: any): void {
+        for (let i:number = 0; i < this.storage.length; i++) {
+            if (this.storage[i][key]) {
+                this.storage[i][key] = value;
+                return;
+            } 
+        }
+    }
+
+	*/
+
+
+	peekFirstObjectItem(key: any): any {
  		// todo: return a reference to the last item in storage without removing
  		// this.storage[-1];
-		return this.storage[0];
+		return this.storage[key];
 	}
 
 	isEmpty(): boolean {
- 		// todo: return true if storage is empty, false otherwise
-			if (this.storage[0] === undefined) {
+ // 		// todo: return true if storage is empty, false otherwise
+			if (this.storage === {}) {
 				return true;
 			} 
 			return false;
@@ -208,15 +225,15 @@ class assocArray {
 let aa: assocArray = new assocArray();
 assert(aa.isEmpty(), true, "Associative arrary is empty on creation");
 
-aa.addObjectItem(new objectItem("kitten", "sss", 5, true));
+aa.addObjectItem("key1", "myvalue1");
 assert(aa.isEmpty(), false, "Associative Array is not empty after one ObjectItem added");
 
-let i5: objectItem = aa.peekFirstObjectItem();
-assert(i5.key3, 5, "Peeking first Associative Array item gets us the first ObjectItem");
+let i5: objectItem = aa.peekFirstObjectItem("key1");
+assert(i5, "myvalue1", "Peeking first Associative Array item gets us the first ObjectItem");
 assert(aa.isEmpty(), false, "Associative Array  is not emptied by peeking");
 
-let i6: objectItem = aa.getFirstObjectItem();
-assert(i6.key3, 5, "Associative Array returns last item on getLastObjectItem");
+let i6: objectItem = aa.getFirstObjectItem("key1");
+assert(i6, undefined, "Associative Array returns last item on getLastObjectItem");
 assert(aa.isEmpty(), true, "Associative Array is empty after popping first item");
 
 
