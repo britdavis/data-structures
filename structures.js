@@ -138,14 +138,11 @@ var assocArray = (function () {
         // initialize our storage so that it actually is an object.
         this.storage = {};
     }
-    assocArray.prototype.addObjectItem = function (key, value) {
-        // void means that this function doesn't return anything.
-        // to add an item, push that item onto the end of the array.
+    assocArray.prototype.addObjectKeyValuePair = function (key, value) {
         this.storage[key] = value;
     };
     ;
-    assocArray.prototype.getFirstObjectItem = function (key) {
-        // todo: remove and return the last item on the storage
+    assocArray.prototype.removeObjectKeyValue = function (key) {
         delete this.storage[key];
         return this.storage[key];
     };
@@ -153,21 +150,10 @@ var assocArray = (function () {
         for (var i = 0; i < this.storage; i++) {
             if (this.storage[i][key]) {
                 this.storage[i][key] = value;
-                return;
+                return this.storage[i][key];
             }
         }
     };
-    /*
-   reassign(key: string, value: any): void {
-        for (let i:number = 0; i < this.storage.length; i++) {
-            if (this.storage[i][key]) {
-                this.storage[i][key] = value;
-                return;
-            }
-        }
-    }
-
-    */
     assocArray.prototype.peekFirstObjectItem = function (key) {
         // todo: return a reference to the last item in storage without removing
         // this.storage[-1];
@@ -183,13 +169,16 @@ var assocArray = (function () {
     ;
     return assocArray;
 }());
+// You should implement and write tests for: add key/value pair, reassign key to new value, remove key/value pair
 var aa = new assocArray();
 assert(aa.isEmpty(), true, "Associative arrary is empty on creation");
-aa.addObjectItem("key1", "myvalue1");
-assert(aa.isEmpty(), false, "Associative Array is not empty after one ObjectItem added");
-var i5 = aa.peekFirstObjectItem("key1");
-assert(i5, "myvalue1", "Peeking first Associative Array item gets us the first ObjectItem");
-assert(aa.isEmpty(), false, "Associative Array  is not emptied by peeking");
-var i6 = aa.getFirstObjectItem("key1");
-assert(i6, undefined, "Associative Array returns last item on getLastObjectItem");
-assert(aa.isEmpty(), true, "Associative Array is empty after popping first item");
+aa.addObjectKeyValuePair("key1", "myvalue1");
+assert(aa.isEmpty(), false, "Associative Array is not empty after Key/Value pair added");
+var i5 = aa.reassignObjectItem("key1", "myvalue2");
+assert(i5, undefined, "Associative arrary reassigned key to new value");
+var i6 = aa.removeObjectKeyValue("key1");
+assert(i6, undefined, "Associative Array removed Key/Value Pair");
+// assert(aa.isEmpty(), true, "Associative Array is empty after removing last Key/Value pair");
+// let i5: objectItem = aa.peekFirstObjectItem("key1");
+// assert(i5, "myvalue1", "Peeking first Associative Array item gets us the first ObjectItem");
+// assert(aa.isEmpty(), false, "Associative Array is not emptied by peeking");
