@@ -166,7 +166,7 @@ class objectItem {
 
 class assocArray {
 	 // BCD set up our associative array, and keep it from prying eyes
-	private storage: objectItem;
+	public storage: objectItem;
 
 	constructor() {
  		// initialize our storage so that it actually is an object.
@@ -213,7 +213,7 @@ class assocArray {
 
 	isEmpty(): boolean {
  // 		// todo: return true if storage is empty, false otherwise
-			if (this.storage === {}) {
+			if (Object.keys(this.storage).length === 0) {
 				return true;
 			} 
 			return false;

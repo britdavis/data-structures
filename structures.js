@@ -175,7 +175,7 @@ var assocArray = (function () {
     };
     assocArray.prototype.isEmpty = function () {
         // 		// todo: return true if storage is empty, false otherwise
-        if (this.storage === {}) {
+        if (Object.keys(this.storage).length === 0) {
             return true;
         }
         return false;
